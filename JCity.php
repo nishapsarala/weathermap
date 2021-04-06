@@ -8,7 +8,54 @@
 declare(strict_types=1);
 class JCity {
     private $url;  
-  
+ 
+     /*
+     * Function name : fnTemplateRedirect
+     * Parameters : None
+     * Return Type : None
+     * Description : This function add required CSS and JS files
+     *               in the fronend custom page created for the plugin.
+     */
+
+    public function fnTemplateRedirect(){
+            require_once('detail.php');
+            exit();
+    }
+
+    /*
+     * Function name : setUrl
+     * Set API Url.
+    */  
+
+    public function setUrl($url) { 
+       $this->url = $url;
+    } 
+
+    /*
+     * Function name : setwUrl
+     * Set API Url for wind data.
+    */   
+    public function setwUrl($wurl) { 
+       $this->wurl = $wurl;
+    } 
+
+    /*
+     * Function name : getUrl
+     * Get API Url.
+    */
+
+    public function getUrl() { 
+       return $this->url;
+    }
+
+    /*
+     * Function name : getwUrl
+     * Get API Url for wind data.
+    */
+
+    public function getwUrl() { 
+       return $this->wurl;
+    }
 
     /*
      * Function name : getCityData
@@ -17,7 +64,7 @@ class JCity {
     */
 
     public function getCityData() { 
-        
+        /*
         $curl = curl_init();
         curl_setopt_array($curl, array(
           CURLOPT_URL => "http://api.openweathermap.org/data/2.5/weather?units=metric&appid=e8fdfbc37eac561e23d29d942387b187&q=London,GB",
@@ -41,9 +88,27 @@ class JCity {
         } else {
           echo $response;
         }
-         
+        */
+        $apiKey = "e8fdfbc37eac561e23d29d942387b187";
+        if(!empty($_REQUEST['q'])) $q =$_REQUEST['q']; else $q="Warwick";
+        $googleApiUrl = file_get_contents($this->url.$q.",GB");
+        $weather = json_decode($googleApiUrl); 
+        return $weather; 
     } 
- 
+
+    /*
+     * Function name : getWindData
+     * Return Type : Array
+     * Description : It retrieves users details from API / Manage error handling for the external HTTP requests .
+    */
+
+    public function getWindData() { 
+        $apiKey = "e8fdfbc37eac561e23d29d942387b187";
+        if(!empty($_REQUEST['q'])) $q =$_REQUEST['q']; else $q="Warwick";
+        $googleApiUrl = file_get_contents($this->wurl.$q.",GB");
+        $data = json_decode($googleApiUrl);  
+        return $data;
+    }
     
 }
 ?>
